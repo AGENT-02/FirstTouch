@@ -1,0 +1,24 @@
+name: FirstTouch
+options:
+  bundleIdPrefix: com.example
+configs:
+  Release: release
+  Debug: debug
+
+targets:
+  FirstTouch:
+    type: application
+    platform: iOS
+    deploymentTarget: "17.0"
+    sources:
+      - path: Sources/FirstTouch
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.example.FirstTouch
+        CODE_SIGN_STYLE: Manual
+        SWIFT_VERSION: 5.0
+        INFOPLIST_KEY_CFBundleDisplayName: FirstTouch
+        MARKETING_VERSION: 1.0.0
+        CURRENT_PROJECT_VERSION: 1
+    scheme:
+      testTargets: []
