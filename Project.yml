@@ -16,19 +16,17 @@ targets:
 
     sources:
       - path: Sources/FirstTouch
+      - path: Sources/FirstTouch/Info.plist   # 🔑 THIS LINE FIXES IT
 
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.example.FirstTouch
         SWIFT_VERSION: 5.0
 
-        # 🔑 Explicit Info.plist (fixes CI archive validation)
         INFOPLIST_FILE: Sources/FirstTouch/Info.plist
-
         MARKETING_VERSION: 1.0.0
         CURRENT_PROJECT_VERSION: 1
 
-        # Unsigned build (eSign-compatible)
         CODE_SIGN_STYLE: Manual
         CODE_SIGNING_ALLOWED: NO
         CODE_SIGNING_REQUIRED: NO
