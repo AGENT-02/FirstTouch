@@ -2,6 +2,7 @@ import SwiftUI
 
 struct ContentView: View {
     @EnvironmentObject private var store: FirstTouchStore
+    @Environment(\.scenePhase) private var scenePhase
     @State private var showDanger = false
 
     var body: some View {
@@ -49,6 +50,13 @@ struct ContentView: View {
                 Button("Cancel", role: .cancel) { }
             } message: {
                 Text("This cannot be undone.")
+            }
+            .task {
+                await store.recordFirstTouchIfNeeded()
+            }
+            .onChange(of: scenePhase) { _, newPhase in
+                guard newPhase == .active else { return }
+                Task { await store.recordFirstTouchIfNeeded() }
             }
         }
     }

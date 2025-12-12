@@ -50,6 +50,13 @@ jobs:
 
           echo "ARCHIVE_PATH=$ARCHIVE_PATH" >> "$GITHUB_ENV"
 
+      - name: Upload build log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-log
+          path: ${{ runner.temp }}/build.log
+
       - name: Package unsigned IPA
         shell: bash
         run: |
@@ -65,9 +72,11 @@ jobs:
 
           WORK="$RUNNER_TEMP/ipa"
           mkdir -p "$WORK/Payload"
-          cp -R "$APP_PATH" "$WORK/Payload/"
+          # Preserve symlinks inside the app bundle during the copy so the IPA stays valid.
+          rsync -a "$APP_PATH" "$WORK/Payload/"
 
-          (cd "$WORK" && /usr/bin/zip -r "FirstTouch-unsigned.ipa" "Payload")
+          # Preserve symlinks so the app bundle stays valid inside the IPA.
+          (cd "$WORK" && /usr/bin/zip -r -y "FirstTouch-unsigned.ipa" "Payload")
 
           echo "IPA created:"
           ls -la "$WORK/FirstTouch-unsigned.ipa"
